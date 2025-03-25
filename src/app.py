@@ -21,7 +21,3 @@ async def main():
     """))
 
 asyncio.run(main())
-
-# TODO
-# passer les prompts au format YAML
-# voir comment faire une CLI sur base python
