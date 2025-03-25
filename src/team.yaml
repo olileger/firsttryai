@@ -1,0 +1,39 @@
+name: Better Prompt team
+
+model:
+  name: 4o
+  api-key: env(OAI_API_KEY)
+
+termination:
+  keyword: ## END ##
+  max-round: 10
+
+agents:
+  - file: ./pr.yaml
+  - file: ./
+
+prompt: |
+  <Context>
+  You are in a role play game.
+  The following roles are available: {roles}.
+  </Context>
+
+  <Task>
+  Read the following conversation.
+  Then pick the next role to play between {participants}.
+  Only return the role name.
+  </Task>
+
+  <Rules>
+  If the Prompter role reply contains '## END OF PROMPT ##':
+    * The next role to play is the Runner.
+
+  If the Reviewer role reply only contains '## END OF REVIEW ##':
+    * The next role to play is the Runner.
+  Else
+    * The next role to play is the Prompter, his answer should ends with '## END OF PROMPT ##'.
+
+  - The Prompter role should be called with the last output of the Reviewer role.
+  - The Runner role should be called with the last output of the Prompter role.
+  - A role should never be called twice in a row.
+  </Rules>
