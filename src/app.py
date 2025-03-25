@@ -8,11 +8,11 @@ from autogen_agentchat.ui import Console
 
 
 async def main():
-    pr = await AgentHelper.CreateAgent("Prompter", './src/pr.txt', 'OAI_API_KEY')
-    re = await AgentHelper.CreateAgent("Reviewer", './src/re.txt', 'OAI_API_KEY')
-    ru = await AgentHelper.CreateAgent("Runner", './src/ru.txt', 'OAI_API_KEY')
+    pr = await AgentHelper.CreateAgent("Prompter", './samples/pr.txt', 'OAI_API_KEY')
+    re = await AgentHelper.CreateAgent("Reviewer", './samples/re.txt', 'OAI_API_KEY')
+    ru = await AgentHelper.CreateAgent("Runner", './samples/ru.txt', 'OAI_API_KEY')
 
-    t = TeamHelper.CreateTeam([pr, re, ru], './src/team.txt', 'OAI_API_KEY')
+    t = TeamHelper.CreateTeam([pr, re, ru], './samples/team.txt', 'OAI_API_KEY')
 
     await Console(t.run_stream(task=
     """
