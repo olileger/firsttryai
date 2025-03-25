@@ -1,3 +1,3 @@
-# First Tr(a)i
+# First Tr(y | ai)
 Pronounced "First Try", the most targeted result when you're trying skateboarding trick.
-First Tr(a)i aims to ease building and deploying GenAI agents and teams
+First Tr(y | ai) aims to ease building and deploying GenAI agents and teams.
