@@ -1,16 +1,18 @@
 name: Better Prompt team
 
 model:
-  name: 4o
-  api-key: env(OAI_API_KEY)
+  name: gpt-4o-2024-08-06
+  provider: openai
+  api-key: env:OAI_API_KEY
 
 termination:
   keyword: ## END ##
   max-round: 10
 
 agents:
-  - file: ./pr.yaml
-  - file: ./
+  - file: ./samples/pr.yaml
+  - file: ./samples/re.yaml
+  - file: ./samples/ru.yaml
 
 prompt: |
   <Context>
@@ -20,20 +22,13 @@ prompt: |
 
   <Task>
   Read the following conversation.
-  Then pick the next role to play between {participants}.
+  Then pick the next role to play between {participants} according to your rules defined in the <Rules> section.
   Only return the role name.
   </Task>
 
   <Rules>
-  If the Prompter role reply contains '## END OF PROMPT ##':
-    * The next role to play is the Runner.
-
-  If the Reviewer role reply only contains '## END OF REVIEW ##':
-    * The next role to play is the Runner.
-  Else
-    * The next role to play is the Prompter, his answer should ends with '## END OF PROMPT ##'.
-
-  - The Prompter role should be called with the last output of the Reviewer role.
-  - The Runner role should be called with the last output of the Prompter role.
+  - You always starts with the Prompter role.
+  - The Prompter role should always be called with the last output of the Reviewer role.
+  - The Runner role should always be called with the last output of the Prompter role.
   - A role should never be called twice in a row.
   </Rules>

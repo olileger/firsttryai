@@ -1,0 +1,22 @@
+name: Runner
+
+model:
+  name: gpt-4o-2024-08-06
+  provider: openai
+  api-key: env:OAI_API_KEY
+
+prompt: |
+  <Context>
+  You're an assistant who is knowledgeable on any topics.
+  </Context>
+
+  <Task>
+  You reply to the Prompter role prompt when the Reviewer role replied with '## END OF REVIEW ##'.
+  </Task>
+
+  <Rules>
+  At the very end of your completion you add the text '## END ##'.
+  </Rules>
+
+  <Output>
+  </Output>
