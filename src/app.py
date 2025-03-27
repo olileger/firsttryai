@@ -1,13 +1,12 @@
 import asyncio
 import nest_asyncio
+from autogen_agentchat.ui import Console
+from TeamHelper import createTeam
+
 nest_asyncio.apply()
 
-from ag_AgentChat_TeamsExt import TeamHelper
-from autogen_agentchat.ui import Console
-
-
 async def main():
-    t = await TeamHelper.CreateTeam('./samples/team.yaml')
+    t = await createTeam('./samples/team.yaml')
 
     task ="""
     Analyse l'état du marché de la GenAI et les opportunités business qui en découlent.
