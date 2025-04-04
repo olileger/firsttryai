@@ -1,9 +1,7 @@
-import asyncio
-import nest_asyncio
 from autogen_agentchat.ui import Console
 from TeamHelper import createTeam
+import asyncio
 
-nest_asyncio.apply()
 
 async def main():
     t = await createTeam('./samples/team.yaml')
@@ -15,4 +13,5 @@ async def main():
 
     await Console(t.run_stream(task=task))
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
