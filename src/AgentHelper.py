@@ -1,16 +1,16 @@
 from autogen_agentchat.agents import AssistantAgent
 from autogen_core.models import UserMessage
-from FileHelper import readYamlFile, interpretYamlModelObject
-from ModelHelper import createModel
+from src import FileHelper
+from src import ModelHelper
 
 
 async def createAgent(filePath: str) -> AssistantAgent:
-    file = readYamlFile(filePath)
+    file = FileHelper.readYamlFile(filePath)
     try:
         # Check if description exists in the dictionary
         if "description" not in file or file["description"] == "":
-            model = interpretYamlModelObject(file["model"])
-            llm = createModel(model["name"], model["provider"], model["api-key"])
+            model = FileHelper.interpretYamlModelObject(file["model"])
+            llm = ModelHelper.createModel(model["name"], model["provider"], model["api-key"])
             description = await llm.create([UserMessage(content=F"Describe the following prompt message in 1 short sentence: {file["prompt"]}",
                                                         source="user")])
             description = description.content
