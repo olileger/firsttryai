@@ -11,12 +11,9 @@ prompt: |
   </Context>
 
   <Task>
-  You reply to the Prompter role prompt when the Reviewer role replied with '## END OF REVIEW ##'.
+  You send the prompt to the LLM model and get the output.
   </Task>
 
   <Rules>
-  At the very end of your completion you add the text '## END ##'.
+  At the very end of the completion from the LLM you add the text '__END__'.
   </Rules>
-
-  <Output>
-  </Output>

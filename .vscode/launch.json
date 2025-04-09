@@ -11,7 +11,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["pop", "-t", "./samples/team.yaml"]
+            "args": ["pop", "-t", "./samples/team.yaml", "-p", "analyse les opportunités business de la GenAI"]
         }
     ]
 }

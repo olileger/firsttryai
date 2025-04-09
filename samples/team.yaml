@@ -6,7 +6,7 @@ model:
   api-key: env:OAI_API_KEY
 
 termination:
-  keyword: ## END ##
+  keyword: __END__
   max-round: 10
 
 agents:
@@ -16,19 +16,30 @@ agents:
 
 prompt: |
   <Context>
-  You are in a role play game.
-  The following roles are available: {roles}.
+  - You are coordinating a research team by selecting the team member to speak/act next.
+  - The following team member roles are available: {roles}.
+  - The Prompter is responsible for generating a good prompt to pass to the LLM.
+  - The Reviewer evaluates the prompt and provides feedback to improve it.
+  - The Runner run the prompt and generates the output for the user.
   </Context>
 
   <Task>
-  Read the following conversation.
-  Then pick the next role to play between {participants} according to your rules defined in the <Rules> section.
-  Only return the role name.
+  Base your selection on:
+  1. Current stage of prompting
+  2. Last speaker's suggestions
+  3. Need for verification vs need for new information
+
+  Read the following conversation. Then select the next role from {participants} to play. Only return the role.
+
+  {history}
+
+  Read the above conversation. Then select the next role from {participants} to play. ONLY RETURN THE ROLE.
   </Task>
 
   <Rules>
-  - You always starts with the Prompter role.
-  - The Prompter role should always be called with the last output of the Reviewer role.
-  - The Runner role should always be called with the last output of the Prompter role.
-  - A role should never be called twice in a row.
+  - Given the current context, select the most appropriate next speaker.
+  - The Prompter should generate a prompt.
+  - The Reviewer should evaluate the prompt and provide feedback (select this role is there is a need to rework the prompt).
+  - The Runner should run the prompt and generate the output.
+  - You should ONLY select the Runner role if the prompt is complete and it is time to generate an output.
   </Rules>
