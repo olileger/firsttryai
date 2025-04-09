@@ -4,14 +4,21 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-    
         {
-            "name": "Python Debugger: Current File",
+            "name": "PyDbg: Team",
             "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
             "args": ["pop", "-t", "./samples/team.yaml", "-p", "analyse les opportunités business de la GenAI"]
+        },
+        {
+            "name": "PyDbg: Agent",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": ["pop", "-a", "./samples/pr.yaml", "-p", "analyse les opportunités business de la GenAI"]
         }
     ]
 }
