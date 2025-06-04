@@ -15,7 +15,14 @@ async def runTask(args, o):
         print("Task passed along: ", task)
     else:
         task = input("Task: ")
-    await Console(o.run_stream(task=task))
+    
+    # Check if HITL mode is enabled
+    if hasattr(args, 'hitl') and args.hitl:
+        print("🔄 Human-in-the-Loop mode enabled")
+        from src import HITLHelper
+        await HITLHelper.create_hitl_console(o.run_stream(task=task))
+    else:
+        await Console(o.run_stream(task=task))
 
 
 #
@@ -58,6 +65,8 @@ async def main():
     # 'pop' command
     pop = subcmd.add_parser("pop", help="Pop up an agent or team")
     pop.add_argument("-p", "--prompt", type=str, help="The prompt to use")
+    pop.add_argument("--hitl", "--human-in-the-loop", action="store_true", 
+                     help="Enable Human-in-the-Loop mode for reviewing AI actions")
     popgroup = pop.add_mutually_exclusive_group(required=True)
     popgroup.add_argument("-t", "--team", type=str, help="Team description file")
     popgroup.add_argument("-a", "--agent", type=str, help="Agent description file")
