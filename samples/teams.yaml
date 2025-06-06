@@ -1,0 +1,21 @@
+teams:
+  - name: TeamA
+    config: ./samples/team.yaml
+    task: "Help me improve a prompt for generating creative writing ideas."
+  
+  - name: TeamB
+    model:
+      name: gpt-4o-2024-08-06
+      provider: openai
+      api-key: env:OAI_API_KEY
+    termination:
+      keyword: __END__
+      max-round: 5
+    agents:
+      - file: ./samples/pr.yaml
+      - file: ./samples/re.yaml
+    prompt: |
+      You are coordinating a simple prompt improvement team.
+      Select the next team member to speak: Prompter or Reviewer.
+      Only return the role name.
+    task: "Create a prompt for summarizing technical documentation."

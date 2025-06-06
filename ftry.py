@@ -46,6 +46,17 @@ def runKickflip():
 
 
 #
+# runTeams
+#
+# This function runs the teams command.
+#
+async def runTeams(args):
+    print(f"Loading teams configuration from: {args.config}")
+    from src import TeamsHelper
+    await TeamsHelper.runTeamsFromConfig(args.config)
+
+
+#
 # main
 #
 # This function is the entry point for the ftry CLI.
@@ -65,12 +76,18 @@ async def main():
     # 'kickflip' command
     subcmd.add_parser("kickflip", help="Ask for a kickflip")
 
+    # 'teams' command
+    teams = subcmd.add_parser("teams", help="Run multiple teams in parallel from YAML configuration")
+    teams.add_argument("config", type=str, help="Path to teams configuration YAML file")
+
     # Commands: function calling
     args = p.parse_args()
     if args.subcmd == "pop":
         await runPop(args)
     elif args.subcmd == "kickflip":
         runKickflip()
+    elif args.subcmd == "teams":
+        await runTeams(args)
 
 
 #
