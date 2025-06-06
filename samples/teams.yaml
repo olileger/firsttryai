@@ -1,8 +1,13 @@
+# Example teams configuration file
+# This demonstrates running multiple GenAI teams in parallel
+
 teams:
+  # Team using external configuration file
   - name: TeamA
-    config: ./samples/team.yaml
+    config: ./samples/team.yaml  # Reference to existing team config
     task: "Help me improve a prompt for generating creative writing ideas."
   
+  # Team with inline configuration
   - name: TeamB
     model:
       name: gpt-4o-2024-08-06
@@ -12,8 +17,8 @@ teams:
       keyword: __END__
       max-round: 5
     agents:
-      - file: ./samples/pr.yaml
-      - file: ./samples/re.yaml
+      - file: ./samples/pr.yaml  # Prompter agent
+      - file: ./samples/re.yaml  # Reviewer agent
     prompt: |
       You are coordinating a simple prompt improvement team.
       Select the next team member to speak: Prompter or Reviewer.
