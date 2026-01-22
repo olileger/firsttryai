@@ -51,8 +51,8 @@ def runKickflip():
 # This function runs the shout command.
 #
 def runShout(args):
-    # Check if message was provided via -m flag or positional argument
-    message = args.message_flag if args.message_flag else args.message
+    # Check if message was provided via -m flag (takes precedence) or positional argument
+    message = args.message_flag or args.message
     if not message:
         message = input("Message: ")
     print(f"📢 {message}")
