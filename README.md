@@ -15,7 +15,7 @@ ftry shout "Hello World!"
 # With -m flag
 ftry shout -m "Hello World!"
 
-# Interactive mode (prompts for message)
+# Interactive mode (prompts for message) - RECOMMENDED for sensitive data
 ftry shout
 ```
 
@@ -24,6 +24,14 @@ ftry shout
 $ ftry shout "Hello World!"
 📢 Hello World!
 ```
+
+**Security Note:**
+⚠️ Messages passed as command-line arguments (positional or with `-m` flag) will be visible in:
+- Shell history files (`.bash_history`, `.zsh_history`, etc.)
+- Process listings (`ps`, `top` commands)
+- System audit logs
+
+**For sensitive messages, use interactive mode** (run `ftry shout` without arguments) to avoid storing the message in shell history.
 
 **Help:**
 ```bash
