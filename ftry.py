@@ -46,6 +46,19 @@ def runKickflip():
 
 
 #
+# runShout
+#
+# This function runs the shout command.
+#
+def runShout(args):
+    # Check if message was provided via -m flag or positional argument
+    message = args.message_flag if args.message_flag else args.message
+    if not message:
+        message = input("Message: ")
+    print(f"📢 {message}")
+
+
+#
 # main
 #
 # This function is the entry point for the ftry CLI.
@@ -65,12 +78,19 @@ async def main():
     # 'kickflip' command
     subcmd.add_parser("kickflip", help="Ask for a kickflip")
 
+    # 'shout' command
+    shout = subcmd.add_parser("shout", help="Display a custom message with megaphone")
+    shout.add_argument("message", nargs="?", type=str, help="The message to shout")
+    shout.add_argument("-m", "--message", dest="message_flag", type=str, help="The message to shout")
+
     # Commands: function calling
     args = p.parse_args()
     if args.subcmd == "pop":
         await runPop(args)
     elif args.subcmd == "kickflip":
         runKickflip()
+    elif args.subcmd == "shout":
+        runShout(args)
 
 
 #
