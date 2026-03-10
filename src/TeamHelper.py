@@ -20,13 +20,13 @@ async def createTeam(filePath: str) -> Team:
                 raise Exception(f"Agent {a} is not a valid YAML as it miss the 'file' key.")
 
         # Model: read the API Key from the environment variable if needed.
-        model = FileHelper.interpretYamlModelObject(file["model"])
-        model_client = ModelHelper.createModel(model["name"], model["provider"], model["api-key"]).client
+        model_def = FileHelper.interpretYamlModelObject(file["model"])
+        model = ModelHelper.createModel(model_def["name"], model_def["provider"], model_def["api-key"])
 
         return Team(
             name=file["name"],
             agents=agents,
-            model_client=model_client,
+            model=model,
             selector_prompt=file["prompt"],
             max_round=int(file["termination"]["max-round"]),
             termination_keyword=file["termination"]["keyword"]
