@@ -8,7 +8,7 @@
             "name": "PyDbg: Team",
             "type": "debugpy",
             "request": "launch",
-            "program": "${file}",
+            "program": "./ftry.py",
             "console": "integratedTerminal",
             "args": ["pop", "-t", "./samples/team.yaml", "-p", "analyse les opportunités business de la GenAI"]
         },
@@ -16,7 +16,7 @@
             "name": "PyDbg: Agent",
             "type": "debugpy",
             "request": "launch",
-            "program": "${file}",
+            "program": "./ftry.py",
             "console": "integratedTerminal",
             "args": ["pop", "-a", "./samples/pr.yaml", "-p", "analyse les opportunités business de la GenAI"]
         }
