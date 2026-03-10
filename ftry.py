@@ -15,7 +15,7 @@ async def runTask(args, o):
         print("Task passed along: ", task)
     else:
         task = input("Task: ")
-    await Console(o.run_stream(task=task))
+    await Console(o.run(task))
 
 
 #

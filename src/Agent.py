@@ -14,10 +14,5 @@ class Agent:
             model_client=model_client
         )
     
-    @property
-    def name(self) -> str:
-        return self._name
-    
-    @property
-    def instruction(self) -> str:
-        return self._instruction
+    def run(self, task: str):
+        return self._agent.run_stream(task=task)
