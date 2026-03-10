@@ -3,9 +3,10 @@ from autogen_agentchat.conditions import MaxMessageTermination, TextMentionTermi
 from src import AgentHelper
 from src import FileHelper
 from src import ModelHelper
+from src.Team import Team
 
 
-async def createTeam(filePath: str) -> SelectorGroupChat:
+async def createTeam(filePath: str) -> Team:
     """
     Creates a team of agents for group chat.
     :param agents: List of agents to be included in the team.
@@ -30,9 +31,10 @@ async def createTeam(filePath: str) -> SelectorGroupChat:
         tc = MaxMessageTermination(int(file["termination"]["max-round"])) | TextMentionTermination(file["termination"]["keyword"])
         
         # Create the team
-        return SelectorGroupChat(participants=file["agents"],
+        chat = SelectorGroupChat(participants=file["agents"],
                                     model_client=ModelHelper.createModel(file["model"]["name"], file["model"]["provider"], file["model"]["api-key"]),
                                     selector_prompt=file["prompt"],
                                     termination_condition=tc)
+        return Team(name=file["name"], agents=file["agents"], chat=chat)
     except KeyError as e:
         raise Exception(f"YAML file doesn't contains key: {e}")
