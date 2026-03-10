@@ -32,7 +32,7 @@ async def createTeam(filePath: str) -> Team:
         
         # Create the team
         chat = SelectorGroupChat(participants=file["agents"],
-                                    model_client=ModelHelper.createModel(file["model"]["name"], file["model"]["provider"], file["model"]["api-key"]),
+                                    model_client=ModelHelper.createModel(file["model"]["name"], file["model"]["provider"], file["model"]["api-key"]).client,
                                     selector_prompt=file["prompt"],
                                     termination_condition=tc)
         return Team(name=file["name"], agents=file["agents"], chat=chat)
