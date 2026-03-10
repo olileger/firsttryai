@@ -15,3 +15,6 @@ class Model:
             self.client = OpenAIChatCompletionClient(model=name, api_key=api_key)
         else:
             raise ValueError(f"Unsupported provider: {provider}")
+        
+    def getModelClient(self):
+        return self.client

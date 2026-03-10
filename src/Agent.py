@@ -1,17 +1,18 @@
 from autogen_agentchat.agents import AssistantAgent
 from autogen_ext.models.openai import OpenAIChatCompletionClient
+from src.Model import Model
 
 
 class Agent:
     """Provide abstraction for an Agent for an easy library switching."""
     
-    def __init__(self, name: str, instruction: str, model_client: OpenAIChatCompletionClient):
+    def __init__(self, name: str, instruction: str, model: Model):
         self._name = name
         self._instruction = instruction
         self._agent = AssistantAgent(
             name=self._name,
             system_message=self._instruction,
-            model_client=model_client
+            model_client=model.getModelClient()
         )
     
     def run(self, task: str):
