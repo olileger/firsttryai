@@ -18,7 +18,7 @@
             "request": "launch",
             "program": "./ftry.py",
             "console": "integratedTerminal",
-            "args": ["pop", "-a", "./samples/pr.yaml", "-p", "analyse les opportunités business de la GenAI"]
+            "args": ["pop", "-a", "./samples/poete.yaml", "-p", "Le skateboard"]
         }
     ]
 }
