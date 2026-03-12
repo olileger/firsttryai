@@ -1,19 +1,21 @@
-from autogen_agentchat.agents import AssistantAgent
-from autogen_ext.models.openai import OpenAIChatCompletionClient
+from agents import Agent as OpenAIAgent, Runner
 from src.Model import Model
 
 
 class Agent:
-    """Provide abstraction for an Agent for an easy library switching."""
-    
+    """Wrap an OpenAI Agent SDK agent."""
+
     def __init__(self, name: str, instruction: str, model: Model):
         self._name = name
         self._instruction = instruction
-        self._agent = AssistantAgent(
+        self._agent = OpenAIAgent(
             name=self._name,
-            system_message=self._instruction,
-            model_client=model.getModelClient()
+            instructions=self._instruction,
+            model=model.getUnderlyingModel()
         )
+
+    async def run(self, task: str):
+        return await Runner.run(self._agent, task)
     
-    def run(self, task: str):
-        return self._agent.run_stream(task=task)
+    def getUnderlyingAgent(self):
+        return self._agent

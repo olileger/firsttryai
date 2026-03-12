@@ -1,6 +1,6 @@
 import argparse
 import asyncio
-from autogen_agentchat.ui import Console
+
 
 
 #
@@ -15,7 +15,8 @@ async def runTask(args, o):
         print("Task passed along: ", task)
     else:
         task = input("Task: ")
-    await Console(o.run(task))
+    result = await o.run(task)
+    print(result.final_output)
 
 
 #
