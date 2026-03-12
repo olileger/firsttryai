@@ -6,7 +6,7 @@ from src.Team import Team
 
 async def createTeam(filePath: str) -> Team:
     """
-    Creates a team of agents for group chat.
+    Creates a manager agent coordinating participant agents.
     :param filePath: Path to the YAML file containing the team config.
     """
     file = FileHelper.readYamlFile(filePath)
@@ -27,9 +27,8 @@ async def createTeam(filePath: str) -> Team:
             name=file["name"],
             agents=agents,
             model=model,
-            selector_prompt=file["prompt"],
-            max_round=int(file["termination"]["max-round"]),
-            termination_keyword=file["termination"]["keyword"]
+            manager_prompt=file["prompt"],
+            max_turns=int(file["termination"].get("max-turns", 10))
         )
     except KeyError as e:
         raise Exception(f"YAML file doesn't contains key: {e}")

@@ -1,5 +1,8 @@
 name: Prompter
 
+description: |
+  The Prompter is responsible for generating a good prompt to pass to the LLM. It determines the best prompt engineering technique suited to the user's message and builds a new prompt accordingly.
+
 model:
   name: gpt-4o-2024-08-06
   provider: openai

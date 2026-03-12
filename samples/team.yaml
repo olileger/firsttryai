@@ -6,8 +6,7 @@ model:
   api-key: env:OAI_API_KEY
 
 termination:
-  keyword: __END__
-  max-round: 10
+  max-turns: 10
 
 agents:
   - file: ./samples/pr.yaml
@@ -29,11 +28,9 @@ prompt: |
   2. Last speaker's suggestions
   3. Need for verification vs need for new information
 
-  Read the following conversation. Then select the next role from {participants} to play. Only return the role.
-
-  {history}
-
-  Read the above conversation. Then select the next role from {participants} to play. ONLY RETURN THE ROLE.
+  Read the current conversation.
+  Then select the next role from {participants} to play.
+  Only return the role.
   </Task>
 
   <Rules>

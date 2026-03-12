@@ -6,8 +6,7 @@ import asyncio
 #
 # runTask
 #
-# This function runs the task using the Console UI.
-# Either for Team or Agent.
+# This function runs a task through either a Team or an Agent object.
 #
 async def runTask(args, o):
     if args.prompt:
@@ -16,7 +15,7 @@ async def runTask(args, o):
     else:
         task = input("Task: ")
     result = await o.run(task)
-    print(result.final_output)
+    print(getattr(result, "final_output", result))
 
 
 #
