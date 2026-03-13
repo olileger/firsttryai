@@ -1,6 +1,6 @@
 import argparse
 import asyncio
-
+from agents import set_tracing_disabled
 from src.Tracing import parse_tracing_levels
 
 
@@ -87,6 +87,7 @@ async def main():
 # either from the command line or from another script.
 #
 def main_sync():
+    set_tracing_disabled(True)
     asyncio.run(main())
 
 
