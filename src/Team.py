@@ -1,12 +1,21 @@
 from typing import List
 from src.Agent import Agent
 from src.Model import Model
+from src.Tracing import TRACE_TEAM
 
 
 class Team:
     """A manager agent that delegates to participant agents through the Agent wrapper."""
 
-    def __init__(self, name: str, agents: List[Agent], model: Model, manager_prompt: str, max_turns: int):
+    def __init__(
+        self,
+        name: str,
+        agents: List[Agent],
+        model: Model,
+        manager_prompt: str,
+        max_turns: int,
+        tracing: frozenset[str] | None = None
+    ):
         
         """ Check the input parameters for validity. """
         if not agents:
@@ -21,15 +30,19 @@ class Team:
         self.name = name
         self.agents = agents
         self.max_turns = max_turns
+        self.tracing = frozenset() if tracing is None else tracing
 
-        print(f"Manager prompt: {self._buildManagerInstructions(manager_prompt)}")
+        manager_instructions = self._buildManagerInstructions(manager_prompt)
+        if TRACE_TEAM in self.tracing:
+            print(f"Manager prompt:\n{manager_instructions}")
 
         self._manager = Agent(
             name=name,
-            instruction=self._buildManagerInstructions(manager_prompt),
+            instruction=manager_instructions,
             model=model,
             description=name,
-            tools=self._buildParticipantTools()
+            tools=self._buildParticipantTools(),
+            tracing=tracing
         )
 
     def _buildParticipants(self):

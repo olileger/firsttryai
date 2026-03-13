@@ -1,6 +1,7 @@
 import argparse
 import asyncio
 
+from src.Tracing import parse_tracing_levels
 
 
 #
@@ -27,12 +28,12 @@ async def runPop(args):
     if args.team:
         print("Creating team from file: ", args.team)
         from src import TeamHelper
-        t = await TeamHelper.createTeam(args.team)
+        t = await TeamHelper.createTeam(args.team, tracing=args.tracing)
         await runTask(args, t)
     elif args.agent:
         print("Creating agent from file: ", args.agent)
         from src import AgentHelper
-        a = await AgentHelper.createAgent(args.agent)
+        a = await AgentHelper.createAgent(args.agent, tracing=args.tracing)
         await runTask(args, a)
 
 
@@ -58,6 +59,12 @@ async def main():
     # 'pop' command
     pop = subcmd.add_parser("pop", help="Pop up an agent or team")
     pop.add_argument("-p", "--prompt", type=str, help="The prompt to use")
+    pop.add_argument(
+        "--tracing",
+        type=parse_tracing_levels,
+        default=frozenset(),
+        help="Comma-separated tracing levels to display: agent, tool, llm"
+    )
     popgroup = pop.add_mutually_exclusive_group(required=True)
     popgroup.add_argument("-t", "--team", type=str, help="Team description file")
     popgroup.add_argument("-a", "--agent", type=str, help="Agent description file")

@@ -1,7 +1,7 @@
 from typing import Any
 from agents import Agent as OpenAIAgent, Runner
 from src.Model import Model
-from src.Tracing import StdoutAgentHooks
+from src.Tracing import create_stdout_agent_hooks
 
 
 class Agent:
@@ -13,7 +13,8 @@ class Agent:
         instruction: str,
         model: Model,
         description: str | None = None,
-        tools: list[Any] | None = None
+        tools: list[Any] | None = None,
+        tracing: frozenset[str] | None = None
     ):
         self._name = name
         self._instruction = instruction
@@ -23,7 +24,7 @@ class Agent:
             instructions=self._instruction,
             tools=[] if tools is None else tools,
             model=model.getUnderlyingModel(),
-            hooks=StdoutAgentHooks()
+            hooks=create_stdout_agent_hooks(tracing)
         )
 
     async def run(self, task: str, max_turns: int | None = None):

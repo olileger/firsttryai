@@ -4,7 +4,7 @@ from src import ModelHelper
 from src.Team import Team
 
 
-async def createTeam(filePath: str) -> Team:
+async def createTeam(filePath: str, tracing: frozenset[str] | None = None) -> Team:
     """
     Creates a manager agent coordinating participant agents.
     :param filePath: Path to the YAML file containing the team config.
@@ -15,7 +15,7 @@ async def createTeam(filePath: str) -> Team:
         agents = []
         for a in file["agents"]:
             if isinstance(a, dict) and "file" in a:
-                agents.append(await AgentHelper.createAgent(a["file"]))
+                agents.append(await AgentHelper.createAgent(a["file"], tracing=tracing))
             else:
                 raise Exception(f"Agent {a} is not a valid YAML as it miss the 'file' key.")
 
@@ -28,7 +28,8 @@ async def createTeam(filePath: str) -> Team:
             agents=agents,
             model=model,
             manager_prompt=file["prompt"],
-            max_turns=int(file["termination"].get("max-turns", 10))
+            max_turns=int(file["termination"].get("max-turns", 10)),
+            tracing=tracing
         )
     except KeyError as e:
         raise Exception(f"YAML file doesn't contains key: {e}")

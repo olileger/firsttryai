@@ -10,7 +10,10 @@
             "request": "launch",
             "program": "./ftry.py",
             "console": "integratedTerminal",
-            "args": ["pop", "-t", "./samples/team.yaml", "-p", "analyse les opportunités business de la GenAI"]
+            "args": ["pop",
+                     "-t", "./samples/team.yaml",
+                     "-p", "analyse les opportunités business de la GenAI",
+                     "--tracing", "tool,team"]
         },
         {
             "name": "PyDbg: Agent",
