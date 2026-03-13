@@ -1,12 +1,10 @@
-import re
 from typing import List
-from agents import Agent as OpenAIAgent, Runner
 from src.Agent import Agent
 from src.Model import Model
 
 
 class Team:
-    """A manager agent that delegates to participant agents as native SDK tools."""
+    """A manager agent that delegates to participant agents through the Agent wrapper."""
 
     def __init__(self, name: str, agents: List[Agent], model: Model, manager_prompt: str, max_turns: int):
         
@@ -26,11 +24,12 @@ class Team:
 
         print(f"Manager prompt: {self._buildManagerInstructions(manager_prompt)}")
 
-        self._manager = OpenAIAgent(
+        self._manager = Agent(
             name=name,
-            instructions=self._buildManagerInstructions(manager_prompt),
-            tools=self._buildParticipantTools(),
-            model=model.getUnderlyingModel()
+            instruction=self._buildManagerInstructions(manager_prompt),
+            model=model,
+            description=name,
+            tools=self._buildParticipantTools()
         )
 
     def _buildParticipants(self):
@@ -57,14 +56,9 @@ class Team:
     def _buildParticipantTools(self):
         tools = []
         for agent in self.agents:
-            tools.append(
-                agent.getUnderlyingAgent().as_tool(
-                    tool_name=agent.getName(),
-                    tool_description=agent.getDescription()
-                )
-            )
+            tools.append(agent.asTool())
         return tools
     
     async def run(self, task: str):
-        return await Runner.run(self._manager, task, max_turns=self.max_turns)
+        return await self._manager.run(task, max_turns=self.max_turns)
 
