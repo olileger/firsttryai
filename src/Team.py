@@ -46,7 +46,7 @@ class Team:
         self.roles = self._buildRoles()
         return (
             f"{manager_prompt}\n".replace("{participants}", self.participants).replace("{roles}", self.roles) +
-            "<Speaker Selection>"
+            "<Speaker Selection>\n"
             "Delegate work by calling the relevant tools when specialized expertise is needed.\n"
             f"Available Tools: {self.participants}\n"
             f"Tools descriptions:\n{self.roles}\n\n"
