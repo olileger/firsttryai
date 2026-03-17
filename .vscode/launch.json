@@ -13,7 +13,7 @@
             "args": ["pop",
                      "-t", "./samples/team.yaml",
                      "-p", "analyse les opportunités business de la GenAI",
-                     "--tracing", "tool,team"]
+                     "--tracing", "tool,team,agent,handoff"]
         },
         {
             "name": "PyDbg: Agent",
