@@ -1,5 +1,7 @@
+import os
 from src import FileHelper, ModelHelper
 from src.Agent import Agent
+from src.AgentOpenAIAgentSDK import AgentOpenAIAgentSDK
 
 
 async def createAgent(filePath: str, tracing: frozenset[str] | None = None) -> Agent:
@@ -7,7 +9,16 @@ async def createAgent(filePath: str, tracing: frozenset[str] | None = None) -> A
     try:
         model_def = FileHelper.interpretYamlModelObject(file["model"])
         model = ModelHelper.createModel(model_def["name"], model_def["provider"], model_def["api-key"])
-        return Agent(
+        
+        sdk = os.getenv("SDK")
+        if sdk == "OpenAI Agent SDK":
+            agent_class = AgentOpenAIAgentSDK
+        elif sdk == "Microsoft Agent Framework":
+            raise NotImplementedError("SDK 'Microsoft Agent Framework' is not implemented yet.")
+        else:
+            raise ValueError(f"Unsupported SDK: {sdk}")
+
+        return agent_class(
             name=file["name"],
             instruction=file["prompt"],
             model=model,
