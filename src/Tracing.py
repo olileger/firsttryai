@@ -7,18 +7,17 @@ from agents.lifecycle import AgentHooksBase
 from agents.tool import Tool
 
 TRACE_AGENT = "agent"
-TRACE_HANDOFF = "handoff"
 TRACE_TEAM = "team"
 TRACE_TOOL = "tool"
 TRACE_LLM = "llm"
-VALID_TRACE_LEVELS = frozenset({TRACE_AGENT, TRACE_HANDOFF, TRACE_TEAM, TRACE_TOOL, TRACE_LLM})
+VALID_TRACE_LEVELS = frozenset({TRACE_AGENT, TRACE_TEAM,TRACE_TOOL, TRACE_LLM})
 
 
 def parse_tracing_levels(value: str) -> frozenset[str]:
     levels = [item.strip().lower() for item in value.split(",")]
     if not levels or any(not level for level in levels):
         raise argparse.ArgumentTypeError(
-            "Tracing must be a comma-separated list containing agent, handoff, team, tool, and/or llm."
+            "Tracing must be a comma-separated list containing agent, tool, and/or llm."
         )
 
     invalid_levels = sorted({level for level in levels if level not in VALID_TRACE_LEVELS})
@@ -26,7 +25,7 @@ def parse_tracing_levels(value: str) -> frozenset[str]:
         raise argparse.ArgumentTypeError(
             "Invalid tracing level(s): "
             + ", ".join(invalid_levels)
-            + ". Supported values are: agent, handoff, team, tool, llm."
+            + ". Supported values are: agent, tool, llm."
         )
 
     return frozenset(levels)
@@ -74,7 +73,7 @@ class StdoutAgentHooks(AgentHooksBase[Any, OpenAIAgent[Any]]):
         )
 
     async def on_handoff(self, context, agent: OpenAIAgent[Any], source: OpenAIAgent[Any]) -> None:
-        if not (self._is_enabled(TRACE_AGENT) or self._is_enabled(TRACE_HANDOFF)):
+        if not self._is_enabled(TRACE_AGENT):
             return
         print(
             "[agent] handoff: "

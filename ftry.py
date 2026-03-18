@@ -63,7 +63,7 @@ async def main():
         "--tracing",
         type=parse_tracing_levels,
         default=frozenset(),
-        help="Comma-separated tracing levels to display: agent, handoff, team, tool, llm"
+        help="Comma-separated tracing levels to display: agent, tool, llm"
     )
     popgroup = pop.add_mutually_exclusive_group(required=True)
     popgroup.add_argument("-t", "--team", type=str, help="Team description file")

@@ -40,12 +40,10 @@ class Team:
             name=name,
             instruction=manager_instructions,
             model=model,
-            description=(
-                f"Manager for the {name} team. Coordinates specialists and decides who should act next."
-            ),
+            description=name,
+            tools=self._buildParticipantTools(),
             tracing=tracing
         )
-        self._wireHandoffs()
 
     def _buildParticipants(self):
         return ", ".join(agent.getName() for agent in self.agents)
@@ -61,29 +59,18 @@ class Team:
         self.roles = self._buildRoles()
         return (
             f"{manager_prompt}\n".replace("{participants}", self.participants).replace("{roles}", self.roles) +
-            "<Handoffs>\n"
-            "Delegate work by handing off to the relevant specialist when specialized expertise is needed.\n"
-            f"Available specialists: {self.participants}\n"
-            f"Specialist descriptions:\n{self.roles}\n"
-            "After a specialist responds and hands control back, decide whether another specialist should speak or whether you should answer the user.\n"
-            "You are the only agent responsible for selecting the next specialist.\n"
-            "</Handoffs>"
+            "<Speaker Selection>\n"
+            "Delegate work by calling the relevant tools when specialized expertise is needed.\n"
+            f"Available Tools: {self.participants}\n"
+            f"Tools descriptions:\n{self.roles}\n\n"
+            "</Speaker Selection>"
         )
-
-    def _buildWorkerInstructions(self, agent: Agent) -> str:
-        return (
-            f"{agent.getInstruction()}\n"
-            "<Handoffs>\n"
-            f"You are part of the {self.name} team and you are coordinated by the {self.name} manager.\n"
-            f"When you finish your contribution, hand off control back to {self.name}.\n"
-            "</Handoffs>"
-        )
-
-    def _wireHandoffs(self):
-        self._manager.setHandoffAgents(self.agents)
-        """for agent in self.agents:
-        agent.updateInstruction(self._buildWorkerInstructions(agent))
-        agent.setHandoffAgents([self._manager])"""
+    
+    def _buildParticipantTools(self):
+        tools = []
+        for agent in self.agents:
+            tools.append(agent.asTool())
+        return tools
     
     async def run(self, task: str):
         return await self._manager.run(task, max_turns=self.max_turns)
