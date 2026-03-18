@@ -1,7 +1,9 @@
+import os
 from src import AgentHelper
 from src import FileHelper
 from src import ModelHelper
 from src.Team import Team
+from src.TeamOpenAIAgentSDK import TeamOpenAIAgentSDK
 
 
 async def createTeam(filePath: str, tracing: frozenset[str] | None = None) -> Team:
@@ -23,7 +25,15 @@ async def createTeam(filePath: str, tracing: frozenset[str] | None = None) -> Te
         model_def = FileHelper.interpretYamlModelObject(file["model"])
         model = ModelHelper.createModel(model_def["name"], model_def["provider"], model_def["api-key"])
 
-        return Team(
+        sdk = os.getenv("SDK")
+        if sdk == "OpenAI Agent SDK":
+            team_class = TeamOpenAIAgentSDK
+        elif sdk == "Microsoft Agent Framework":
+            raise NotImplementedError("SDK 'Microsoft Agent Framework' is not implemented yet.")
+        else:
+            raise ValueError(f"Unsupported SDK: {sdk}")
+
+        return team_class(
             name=file["name"],
             agents=agents,
             model=model,
