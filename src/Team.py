@@ -50,7 +50,7 @@ class Team:
     
     def _buildRoles(self):
         return "\n".join(
-            f"- {agent.getName()}: {agent.getDescription()}"
+            f"\t- {agent.getName()}: {agent.getDescription()}"
             for agent in self.agents
         )
 
@@ -67,10 +67,7 @@ class Team:
         )
     
     def _buildParticipantTools(self):
-        tools = []
-        for agent in self.agents:
-            tools.append(agent.asTool())
-        return tools
+        return [agent.asTool() for agent in self.agents]
     
     async def run(self, task: str):
         return await self._manager.run(task, max_turns=self.max_turns)

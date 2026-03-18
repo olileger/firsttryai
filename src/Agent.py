@@ -47,7 +47,7 @@ class Agent:
 
     def asTool(self):
         return self._agent.as_tool(
-            tool_name=self.getName(),
+            tool_name=self.getName().replace(" ", "_").lower(),
             tool_description=self.getDescription()
         )
 

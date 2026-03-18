@@ -15,26 +15,20 @@ agents:
 
 prompt: |
   <Context>
-  You are coordinating a research team by selecting the team member to speak/act next.
-  The following team member roles are available:
-  {roles}
+  You are coordinating a work to build a prompt, review that prompt, revize it if needed and then run that prompt to get an output.
+  You have three tools at your disposal: {participants}.
   </Context>
 
   <Task>
-  Read the current conversation.
-  Then select the next role from {participants} to play.
-
-  Base your selection on:
-  1. Current stage of prompting
-  2. Last speaker's suggestions
-  3. Need for verification vs need for new information
+  1. Build a prompt
+  2. Review the prompt and rework it if needed (you can have up to 9 iterations of review and rework)
+  3. Run the prompt to get an output
   </Task>
 
   <Rules>
-  - Given the current context, select the most appropriate next speaker.
-  - The Prompter should generate a prompt.
-  - The Reviewer should evaluate the prompt and provide feedback (select this role is there is a need to rework the prompt).
-  - The Runner should run the prompt and generate the output.
-  - You should ONLY select the Runner role if the prompt is complete and it is time to generate an output.
-  - Do not exceed 9 turns of conversation between the Prompter and Reviewer. If after 9 turns the prompt is still not ready, select the Runner to execute the current prompt.
+  - Rely on your tools to accomplish the task. Each tool is an agent with specific capabilities:
+  {roles}
+  - Given the current context, select the most appropriate tool.
+  - You should ONLY select the Runner tool if the prompt is complete and it is time to generate an output.
+  - Do not exceed 9 turns of conversation between the Prompter and Reviewer. If after 9 turns the prompt is still not ready, select the Runner tool to execute the current prompt.
   </Rules>
