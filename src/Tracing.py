@@ -1,4 +1,5 @@
 import argparse
+import json
 from typing import Any, Iterable
 
 from agents import Agent as OpenAIAgent
@@ -49,6 +50,21 @@ def _preview_turn_input(input_items: list[TResponseInputItem]) -> str:
     return _preview(input_items[-1])
 
 
+def _preview_tool_input(context: Any) -> str:
+    tool_input = getattr(context, "tool_input", None)
+    if tool_input is not None:
+        return _preview(tool_input)
+
+    tool_arguments = getattr(context, "tool_arguments", None)
+    if tool_arguments is None:
+        return "None"
+
+    try:
+        return _preview(json.loads(tool_arguments))
+    except json.JSONDecodeError:
+        return _preview(tool_arguments)
+
+
 class StdoutAgentHooks(AgentHooksBase[Any, OpenAIAgent[Any]]):
     def __init__(self, trace_levels: Iterable[str]):
         self._trace_levels = set(trace_levels)
@@ -88,7 +104,7 @@ class StdoutAgentHooks(AgentHooksBase[Any, OpenAIAgent[Any]]):
         print(
             "[tool] start: "
             f"tool={_tool_name(tool)} "
-            f"tool_input={_preview(getattr(context, 'tool_input', None))}",
+            f"tool_input={_preview_tool_input(context)}",
             flush=True
         )
 

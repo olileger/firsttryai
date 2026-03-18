@@ -1,5 +1,6 @@
 from typing import Any
 from agents import Agent as OpenAIAgent, Runner
+from agents.agent_tool_input import AgentAsToolInput
 from src.Model import Model
 from src.Tracing import create_stdout_agent_hooks
 
@@ -48,7 +49,8 @@ class Agent:
     def asTool(self):
         return self._agent.as_tool(
             tool_name=self.getName().replace(" ", "_").lower(),
-            tool_description=self.getDescription()
+            tool_description=self.getDescription(),
+            parameters=AgentAsToolInput
         )
 
     @staticmethod
